@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/xfk/static/css/main.52e7bc6c.css",
+    "main.js": "/xfk/static/js/main.ebccb72b.js",
+    "index.html": "/xfk/index.html",
+    "main.52e7bc6c.css.map": "/xfk/static/css/main.52e7bc6c.css.map",
+    "main.ebccb72b.js.map": "/xfk/static/js/main.ebccb72b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.52e7bc6c.css",
+    "static/js/main.ebccb72b.js"
+  ]
+}
