@@ -1177,9 +1177,9 @@ const IntelligentAnalysisPage: React.FC = () => {
     <div style={{ padding: 24, background: '#f0f2f5', minHeight: '100vh' }}>
       {/* 页面标题 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <h2 style={{ margin: 0, color: '#1890ff' }}>
-          <ClusterOutlined /> 山东西曼克技术有限公司智能分析管理中心
-        </h2>
+                 <h2 style={{ margin: 0, color: '#1890ff' }}>
+           <ClusterOutlined /> 视频监控管理系统
+         </h2>
         <Space>
           <Button 
             type="primary" 
