@@ -1,117 +1,118 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Image, Typography, Button, Alert } from 'antd';
-import { faceData } from '../data/faceData';
+import React from 'react';
+import { Card, Row, Col, Image, Typography, Alert, Button, Space } from 'antd';
+import { getFaceImagePath, getMonitorImagePath, debugImagePath } from '../utils/imageUtils';
 
 const { Title, Text } = Typography;
 
 const ImageTest: React.FC = () => {
-  const [imageStatus, setImageStatus] = useState<{[key: string]: boolean}>({});
-  const [publicUrl, setPublicUrl] = useState<string>('');
-
-  useEffect(() => {
-    // 获取PUBLIC_URL
-    setPublicUrl(process.env.PUBLIC_URL || '');
-    
-    // 测试每个图片路径
-    faceData.forEach((face) => {
-      const img = new window.Image();
-      img.onload = () => {
-        setImageStatus(prev => ({ ...prev, [face.id]: true }));
-      };
-      img.onerror = () => {
-        setImageStatus(prev => ({ ...prev, [face.id]: false }));
-        console.error(`图片加载失败: ${face.image}`);
-      };
-      img.src = face.image;
-    });
-  }, []);
+  const faceImages = ['1.jpg', '2.jpg', '3.jpg', '4.jpg'];
+  const monitorImages = ['1.jpg', '2.jpg', '3.png', '4.png'];
 
   const testImagePath = (path: string) => {
-    const img = new window.Image();
-    img.onload = () => {
-      alert(`图片加载成功: ${path}`);
-    };
-    img.onerror = () => {
-      alert(`图片加载失败: ${path}`);
-    };
-    img.src = path;
+    debugImagePath(path);
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <Title level={2}>图片加载测试</Title>
+    <div style={{ padding: 24 }}>
+      <Title level={2}>🖼️ 图片路径测试</Title>
       
       <Alert
-        message="调试信息"
+        message="环境信息"
         description={
           <div>
-            <p><strong>PUBLIC_URL:</strong> {publicUrl}</p>
-            <p><strong>当前路径:</strong> {window.location.pathname}</p>
-            <p><strong>完整URL:</strong> {window.location.href}</p>
+            <p><strong>PUBLIC_URL:</strong> {process.env.PUBLIC_URL || '未设置'}</p>
+            <p><strong>当前环境:</strong> {process.env.NODE_ENV}</p>
+            <p><strong>完整URL:</strong> {typeof window !== 'undefined' ? window.location.href : 'unknown'}</p>
+            <p><strong>主机名:</strong> {typeof window !== 'undefined' ? window.location.hostname : 'unknown'}</p>
           </div>
         }
         type="info"
-        style={{ marginBottom: '20px' }}
+        showIcon
+        style={{ marginBottom: 24 }}
       />
-      
-      <div style={{ marginBottom: '20px' }}>
+
+      <Space style={{ marginBottom: 24 }}>
         <Button 
+          type="primary" 
           onClick={() => testImagePath('/images/face/1.jpg')}
-          style={{ marginRight: '10px' }}
         >
-          测试绝对路径: /images/face/1.jpg
+          测试图片路径
         </Button>
         <Button 
-          onClick={() => testImagePath(`${process.env.PUBLIC_URL}/images/face/1.jpg`)}
-          style={{ marginRight: '10px' }}
+          onClick={() => console.log('所有图片路径:', {
+            face: faceImages.map(img => getFaceImagePath(img)),
+            monitor: monitorImages.map(img => getMonitorImagePath(img))
+          })}
         >
-          测试PUBLIC_URL路径
+          查看所有路径
         </Button>
-        <Button 
-          onClick={() => testImagePath('./images/face/1.jpg')}
-        >
-          测试相对路径: ./images/face/1.jpg
-        </Button>
-      </div>
-      
-      <Text>测试人脸图片是否能正确加载：</Text>
-      
-      <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
-        {faceData.map((face) => (
-          <Col key={face.id} xs={24} sm={12} md={8} lg={6}>
-            <Card size="small">
-              <Image
-                src={face.image}
-                alt={face.name}
-                width="100%"
-                height={200}
-                style={{ objectFit: 'cover' }}
-                fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN"
-              />
-              <div style={{ marginTop: '8px' }}>
-                <Text strong>{face.name}</Text>
-                <br />
-                <Text type="secondary">{face.location}</Text>
-                <br />
-                <Text type="secondary">置信度: {face.confidence}%</Text>
-                <br />
-                <Text code style={{ fontSize: '10px' }}>{face.image}</Text>
-              </div>
-            </Card>
-          </Col>
-        ))}
+      </Space>
+
+      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Card title="👤 人脸图片测试" size="small">
+            <Row gutter={[8, 8]}>
+              {faceImages.map((img, index) => (
+                <Col span={6} key={index}>
+                  <div style={{ textAlign: 'center' }}>
+                    <Image
+                      width={60}
+                      height={60}
+                      src={getFaceImagePath(img)}
+                      fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN"
+                      style={{ objectFit: 'cover' }}
+                      onError={(e) => {
+                        console.error(`❌ 图片加载失败: ${img}`);
+                        console.error('路径:', getFaceImagePath(img));
+                      }}
+                      onLoad={() => {
+                        console.log(`✅ 图片加载成功: ${img}`);
+                        console.log('路径:', getFaceImagePath(img));
+                      }}
+                    />
+                    <Text style={{ fontSize: '10px' }}>{img}</Text>
+                    <div style={{ fontSize: '8px', color: '#999' }}>
+                      {getFaceImagePath(img)}
+                    </div>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </Card>
+        </Col>
+
+        <Col span={12}>
+          <Card title="📹 监控图片测试" size="small">
+            <Row gutter={[8, 8]}>
+              {monitorImages.map((img, index) => (
+                <Col span={6} key={index}>
+                  <div style={{ textAlign: 'center' }}>
+                    <Image
+                      width={60}
+                      height={60}
+                      src={getMonitorImagePath(img)}
+                      fallback="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAADDCAYAAADQvc6UAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8LAwSDCIMogwMCcmFxc4BgQ4ANUwgCjUcG3awyMIPqyLsis7PPOq3QdDFcvjV3jOD1boQVTPQrgSkktTgbSf4A4LbmgqISBgTEFyFYuLykAsTuAbJEioKOA7DkgdjqEvQHEToKwj4DVhAQ5A9k3gGyB5IxEoBmML4BsnSQk8XQkNtReEOBxcfXxUQg1Mjc0dyHgXNJBSWpFCYh2zi+oLMpMzyhRcASGUqqCZ16yno6CkYGRAQMDKMwhqj/fAIcloxgHQqxAjIHBEugw5sUIsSQpBobtQPdLciLEVJYzMPBHMDBsayhILEqEO4DxG0txmrERhM29nYGBddr//5/DGRjYNRkY/l7////39v///y4Dmn+LgeHANwDrkl1AuO+pmgAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAwqADAAQAAAABAAAAwwAAAAD9b/HnAAAHlklEQVR4Ae3dP3Ik1RnG4W+FgYxN"
+                      style={{ objectFit: 'cover' }}
+                      onError={(e) => {
+                        console.error(`❌ 图片加载失败: ${img}`);
+                        console.error('路径:', getMonitorImagePath(img));
+                      }}
+                      onLoad={() => {
+                        console.log(`✅ 图片加载成功: ${img}`);
+                        console.log('路径:', getMonitorImagePath(img));
+                      }}
+                    />
+                    <Text style={{ fontSize: '10px' }}>{img}</Text>
+                    <div style={{ fontSize: '8px', color: '#999' }}>
+                      {getMonitorImagePath(img)}
+                    </div>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </Card>
+        </Col>
       </Row>
-      
-      <div style={{ marginTop: '20px' }}>
-        <Text>图片路径信息：</Text>
-        <pre style={{ background: '#f5f5f5', padding: '10px', borderRadius: '4px' }}>
-          {JSON.stringify(faceData.map(f => ({ 
-            name: f.name, 
-            path: f.image,
-            status: imageStatus[f.id] ? 'success' : 'failed'
-          })), null, 2)}
-        </pre>
-      </div>
     </div>
   );
 };

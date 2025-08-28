@@ -7,24 +7,9 @@ export const getPublicPath = (path: string): string => {
   // 确保路径以 / 开头
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   
-  // 在GitHub Pages上，PUBLIC_URL应该是 /xfk
-  // 如果PUBLIC_URL未设置，则使用空字符串（适用于根路径）
-  const publicUrl = process.env.PUBLIC_URL || '';
-  
-  // 组合完整路径
-  const fullPath = `${publicUrl}${normalizedPath}`;
-  
-  // 调试信息（仅在开发环境显示）
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`🔍 Image path debug:`, {
-      originalPath: path,
-      publicUrl,
-      normalizedPath,
-      fullPath
-    });
-  }
-  
-  return fullPath;
+  // 直接使用硬编码的GitHub Pages路径
+  // 这样可以确保在GitHub Pages上图片能正确加载
+  return `https://sdjnzt.github.io/xfk${normalizedPath}`;
 };
 
 /**
@@ -60,12 +45,11 @@ export const getVideoPath = (filename: string): string => {
  * @returns 图片路径数组（包含多种可能的路径）
  */
 export const getImagePaths = (path: string): string[] => {
-  const publicUrl = process.env.PUBLIC_URL || '';
   const basePath = path.startsWith('/') ? path : `/${path}`;
   
   return [
-    `${publicUrl}${basePath}`,           // 标准路径
-    basePath,                            // 相对路径
-    `https://sdjnzt.github.io/xfk${basePath}`, // 硬编码完整路径
+    `https://sdjnzt.github.io/xfk${basePath}`, // 硬编码完整路径（主要）
+    `${process.env.PUBLIC_URL || ''}${basePath}`, // PUBLIC_URL路径（备用）
+    basePath, // 相对路径（备用）
   ];
 }; 
