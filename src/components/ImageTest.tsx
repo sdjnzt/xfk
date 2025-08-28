@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Row, Col, Image, Typography, Alert, Button, Space } from 'antd';
-import { getFaceImagePath, getMonitorImagePath, debugImagePath } from '../utils/imageUtils';
+import { getFaceImagePath, getMonitorImagePath } from '../utils/imageUtils';
 
 const { Title, Text } = Typography;
 
@@ -9,7 +9,8 @@ const ImageTest: React.FC = () => {
   const monitorImages = ['1.jpg', '2.jpg', '3.png', '4.png'];
 
   const testImagePath = (path: string) => {
-    debugImagePath(path);
+    console.log('测试图片路径:', path);
+    console.log('完整路径:', `https://sdjnzt.github.io/xfk${path}`);
   };
 
   return (
