@@ -17,6 +17,7 @@ import {
   Divider
 } from 'antd';
 import { cameras, Camera } from '../data/mockData';
+import { getMonitorImagePath } from '../utils/imageUtils';
 import { 
   VideoCameraOutlined,
   FullscreenOutlined, 
@@ -78,17 +79,17 @@ const VideoMatrixPage: React.FC = () => {
 
   // 监控图片资源
   const monitorImages = [
-    '/images/monitor/1.jpg',
-    '/images/monitor/2.jpg', 
-    '/images/monitor/4.png',
-    '/images/monitor/3.png'
+    getMonitorImagePath('1.jpg'),
+    getMonitorImagePath('2.jpg'), 
+    getMonitorImagePath('4.png'),
+    getMonitorImagePath('3.png')
   ];
 
   // 摄像头到图片的映射
   const getImageForCamera = (cam: Camera, index: number): string => {
     // 特殊指定：停车场监控使用 3.png
     if (cam.id === 'cam005' || cam.area === 'parking') {
-      return '/images/monitor/3.png';
+      return getMonitorImagePath('3.png');
     }
     // 其他摄像头按顺序循环
     return monitorImages[index % monitorImages.length];

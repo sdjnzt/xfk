@@ -54,6 +54,7 @@ import {
   TeamOutlined
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import { getFaceImagePath } from '../utils/imageUtils';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -142,7 +143,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '厂区大门',
       cameraId: 'CAM001',
       timestamp: '2025-08-28 08:30:15',
-      imageUrl: '/images/face/1.jpg',
+      imageUrl: getFaceImagePath('1.jpg'),
       status: 'identified',
       department: '生产部',
       position: '车间主任',
@@ -158,7 +159,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '办公楼大厅',
       cameraId: 'CAM002',
       timestamp: '2025-08-28 09:15:30',
-      imageUrl: '/images/face/2.jpg',
+      imageUrl: getFaceImagePath('2.jpg'),
       status: 'identified',
       department: '技术部',
       position: '工程师',
@@ -174,7 +175,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '仓库A区',
       cameraId: 'CAM003',
       timestamp: '2025-08-28 10:45:22',
-      imageUrl: '/images/face/3.jpg',
+      imageUrl: getFaceImagePath('3.jpg'),
       status: 'unknown',
       lastSeen: '2025-08-28 10:45:22',
       frequency: 1
@@ -188,7 +189,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '生产车间',
       cameraId: 'CAM004',
       timestamp: '2025-08-28 11:20:45',
-      imageUrl: '/images/face/4.jpg',
+      imageUrl: getFaceImagePath('4.jpg'),
       status: 'whitelist',
       department: '质量部',
       position: '质检员',
@@ -204,7 +205,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '停车场',
       cameraId: 'CAM005',
       timestamp: '2025-08-28 12:00:00',
-      imageUrl: '/images/face/5.jpg',
+      imageUrl: getFaceImagePath('5.jpg'),
       status: 'identified',
       department: '物流部',
       position: '司机',
@@ -220,7 +221,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '办公楼电梯',
       cameraId: 'CAM006',
       timestamp: '2025-08-28 13:15:30',
-      imageUrl: '/images/face/6.jpg',
+      imageUrl: getFaceImagePath('6.jpg'),
       status: 'identified',
       department: '人事部',
       position: '主管',
@@ -236,7 +237,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '生产车间',
       cameraId: 'CAM007',
       timestamp: '2025-08-28 14:30:45',
-      imageUrl: '/images/face/7.jpg',
+      imageUrl: getFaceImagePath('7.jpg'),
       status: 'identified',
       department: '生产部',
       position: '技术员',
@@ -252,7 +253,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '仓库B区',
       cameraId: 'CAM008',
       timestamp: '2025-08-28 15:45:20',
-      imageUrl: '/images/face/8.jpg',
+      imageUrl: getFaceImagePath('8.jpg'),
       status: 'identified',
       department: '仓储部',
       position: '库管员',
@@ -268,7 +269,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '厂区后门',
       cameraId: 'CAM009',
       timestamp: '2025-08-28 16:20:10',
-      imageUrl: '/images/face/9.jpg',
+      imageUrl: getFaceImagePath('9.jpg'),
       status: 'blacklist',
       department: '未知',
       position: '未知',
@@ -284,7 +285,7 @@ const IntelligentAnalysisPage: React.FC = () => {
       location: '办公楼会议室',
       cameraId: 'CAM010',
       timestamp: '2025-08-28 17:00:00',
-      imageUrl: '/images/face/10.jpg',
+      imageUrl: getFaceImagePath('10.jpg'),
       status: 'identified',
       department: '销售部',
       position: '经理',
