@@ -2,7 +2,7 @@
   "name": "ximanke-video-system",
   "version": "1.0.0",
   "description": "山东西曼克技术有限公司视频监控系统",
-  "homepage": "http://localhost:3000",
+  "homepage": "https://sdjnzt.github.io/xfk",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
