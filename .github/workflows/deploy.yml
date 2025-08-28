@@ -1,10 +1,11 @@
-name: Build and Deploy to GitHub Pages
+name: 🚀 Deploy to GitHub Pages
 
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,32 +21,100 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
+    - name: 📥 Checkout repository
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
+    - name: 🟢 Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
         
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build project
-      run: npm run build
-      env:
-        CI: false
+    - name: 📋 Check versions
+      run: |
+        echo "🔍 Environment Information:"
+        echo "Node.js: $(node --version)"
+        echo "npm: $(npm --version)"
+        echo "Git: $(git --version)"
         
-    - name: List build directory contents
-      run: ls -la build/
+    - name: ⚙️ Configure npm
+      run: |
+        echo "🔧 Configuring npm..."
+        npm config set registry https://registry.npmjs.org/
+        npm config set strict-ssl false
+        npm config set legacy-peer-deps true
+        npm config set fund false
+        npm config set audit false
+        echo "✅ npm configuration completed"
         
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-      with:
-        enablement: true
-      
-    - name: Upload artifact
+    - name: 🧹 Clean npm cache
+      run: |
+        echo "🧹 Cleaning npm cache..."
+        npm cache clean --force
+        echo "✅ Cache cleaned"
+        
+    - name: 📦 Install dependencies
+      run: |
+        echo "📦 Installing dependencies..."
+        npm ci --legacy-peer-deps --verbose
+        echo "✅ Dependencies installed"
+        
+    - name: 🏗️ Build project
+      run: |
+        echo "🏗️ Building project..."
+        export CI=false
+        export GENERATE_SOURCEMAP=false
+        export SKIP_PREFLIGHT_CHECK=true
+        export NODE_OPTIONS="--max-old-space-size=4096"
+        
+        echo "🔧 Build environment:"
+        echo "  CI: $CI"
+        echo "  GENERATE_SOURCEMAP: $GENERATE_SOURCEMAP"
+        echo "  SKIP_PREFLIGHT_CHECK: $SKIP_PREFLIGHT_CHECK"
+        echo "  NODE_OPTIONS: $NODE_OPTIONS"
+        
+        npm run build
+        echo "✅ Build completed"
+        
+    - name: 🔍 Verify build output
+      run: |
+        echo "🔍 Verifying build output..."
+        echo "📁 Build directory contents:"
+        ls -la build/
+        
+        echo "📏 Build directory size:"
+        du -sh build/
+        
+        echo "🔍 Checking key files:"
+        if [ -f "build/index.html" ]; then
+          echo "  ✅ index.html exists"
+          echo "  📄 index.html size: $(wc -l < build/index.html) lines"
+          echo "  📄 index.html first 5 lines:"
+          head -5 build/index.html
+        else
+          echo "  ❌ index.html missing"
+          exit 1
+        fi
+        
+        if [ -d "build/static" ]; then
+          echo "  ✅ static directory exists"
+          echo "  📁 static contents: $(ls build/static/)"
+        else
+          echo "  ❌ static directory missing"
+          exit 1
+        fi
+        
+        if [ -d "build/images" ]; then
+          echo "  ✅ images directory exists"
+          echo "  🖼️ images contents: $(ls build/images/)"
+        else
+          echo "  ❌ images directory missing"
+          exit 1
+        fi
+        
+        echo "✅ Build verification completed"
+        
+    - name: 📤 Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
         path: './build'
@@ -59,6 +128,14 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     
     steps:
-    - name: Deploy to GitHub Pages
+    - name: 🚀 Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v4 
+      uses: actions/deploy-pages@v4
+      
+    - name: 🎉 Deployment Summary
+      run: |
+        echo "🎉 Deployment completed successfully!"
+        echo "🌐 Your site is now available at: ${{ steps.deployment.outputs.page_url }}"
+        echo "📅 Deployment time: $(date)"
+        echo "🔄 Build commit: ${{ github.sha }}"
+        echo "👤 Deployed by: ${{ github.actor }}" 
