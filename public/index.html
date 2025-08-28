@@ -14,6 +14,21 @@
     <!-- 高德地图JS API -->
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=f6e0e1b6e2e0b6e0e1b6e2e0b6e0e1b6"></script>
     <title>山东西曼克视频监控系统</title>
+    
+    <!-- GitHub Pages 路由处理脚本 -->
+    <script type="text/javascript">
+      // 处理GitHub Pages上的路由问题
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
   </head>
   <body>
     <noscript>您需要启用JavaScript才能运行此应用程序。</noscript>
